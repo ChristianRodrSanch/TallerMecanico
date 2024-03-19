@@ -48,7 +48,7 @@ public class Revisiones {
 
     private void comprobarRevision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaRevision) throws OperationNotSupportedException {
         for (Revision r : coleccionRevisiones){
-            if (!r.estaCerrada()){
+            if (!r.estaCerrado()){
                 if (r.getCliente().equals(cliente)){
                     throw new OperationNotSupportedException("El cliente tiene otra revisión en curso.");
                 } else if (r.getVehiculo().equals(vehiculo)) {
