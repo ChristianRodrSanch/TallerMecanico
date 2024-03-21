@@ -1,8 +1,7 @@
 package org.iesalandalus.programacion.tallermecanico;
-
+/*
 
 import org.iesalandalus.programacion.tallermecanico.modelo.controlador.Controlador;
-import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 
 public class Main {
@@ -12,4 +11,4 @@ public class Main {
         Controlador controlador = new Controlador(modelo, vista);
         controlador.comenzar();
     }
-}
+}*/

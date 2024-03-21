@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.vista;
+/*package org.iesalandalus.programacion.tallermecanico.vista;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.controlador.Controlador;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
@@ -233,3 +233,4 @@ public class Vista {
         controlador.terminar();
     }
 }
+*/

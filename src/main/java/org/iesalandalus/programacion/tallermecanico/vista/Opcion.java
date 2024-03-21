@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.vista;
+/* package org.iesalandalus.programacion.tallermecanico.vista;
 
 import java.util.HashMap;
 
@@ -55,3 +55,4 @@ public enum Opcion {
         return String.format("%d. %s", numeroOpcion, mensaje);
     }
 }
+*/

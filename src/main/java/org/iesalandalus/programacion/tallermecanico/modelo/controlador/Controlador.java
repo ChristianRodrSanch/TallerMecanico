@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.controlador;
+/* package org.iesalandalus.programacion.tallermecanico.modelo.controlador;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
@@ -106,4 +106,4 @@ public class Controlador {
         return modelo.getRevisiones(vehiculo);
     }
 
-}
+} */

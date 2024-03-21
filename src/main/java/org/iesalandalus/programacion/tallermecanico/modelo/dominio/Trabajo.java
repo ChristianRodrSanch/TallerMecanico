@@ -173,15 +173,5 @@ public abstract class Trabajo {
         return Objects.hash(cliente, vehiculo, fechaInicio);
     }
 
-    @Override
-    public String toString() {
-        String mensaje;
-        if (estaCerrado()) {
-            mensaje = String.format("%s - %s (%s - %s): %s horas, %.2f € en material, %.2f € total", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), FORMATO_FECHA.format(this.fechaFin), this.horas, this.precioMaterial, getPrecio());
-        } else {
-            mensaje = String.format("%s - %s (%s - ): %s horas, %.2f € en material", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), this.horas, this.precioMaterial);
-        }
-        return mensaje;
 
-    }
 }

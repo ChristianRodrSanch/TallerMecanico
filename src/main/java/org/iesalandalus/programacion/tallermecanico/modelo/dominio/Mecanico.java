@@ -11,14 +11,14 @@ public class Mecanico extends Trabajo{
 
 
 
-    protected Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
+    public Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
         super(cliente, vehiculo, fechaInicio);
         setCliente(cliente);
         setVehiculo(vehiculo);
         setFechaInicio(fechaInicio);
     }
 
-    protected Mecanico(Mecanico mecanico) {
+    public Mecanico(Mecanico mecanico) {
         super(mecanico);
         Objects.requireNonNull(mecanico, "La revisión no puede ser nula.");
         cliente = new Cliente(mecanico.cliente);
@@ -49,8 +49,14 @@ public class Mecanico extends Trabajo{
         return (getHoras() * FACTOR_HORA) + (precioMaterial * FACTOR_PRECIO_MATERIAL );
     }
 
-    @Override
     public String toString() {
-        return "Mecánico -> " + super.toString();
+        String mensaje;
+        if (estaCerrado()) {
+            mensaje = String.format("Mecánico -> %s - %s (%s - %s): %s horas, %.2f € en material, %.2f € total", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), FORMATO_FECHA.format(this.fechaFin), this.horas, this.precioMaterial, getPrecio());
+        } else {
+            mensaje = String.format("Mecánico -> %s - %s (%s - ): %s horas, %.2f € en material", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), this.horas, this.precioMaterial);
+        }
+        return mensaje;
+
     }
 }
