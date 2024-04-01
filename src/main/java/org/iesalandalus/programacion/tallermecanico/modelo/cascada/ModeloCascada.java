@@ -61,7 +61,7 @@ public class ModeloCascada implements Modelo {
     }
     @Override
     public Trabajo buscar(Trabajo trabajo) {
-        Objects.requireNonNull(trabajos.buscar(trabajo), "La revisión no puede ser nula buscar.");
+        Objects.requireNonNull(trabajos.buscar(trabajo), "El trabajo no puede ser nulo buscar.");
         Trabajo trabajoEncontrado = null;
         if (trabajo instanceof Revision revision) {
             trabajoEncontrado = new Revision(revision);
