@@ -1,7 +1,10 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.controlador;
 
+import org.iesalandalus.programacion.tallermecanico.modelo.FabricaModelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
+import org.iesalandalus.programacion.tallermecanico.vista.FabricaVista;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.ReceptorEventos;
@@ -17,11 +20,9 @@ public class Controlador implements IControlador {
     private final Vista vista;
     private final Modelo modelo;
 
-    public Controlador(Modelo modelo, Vista vista) {
-        Objects.requireNonNull(modelo, "El modelo no puede ser nulo.");
-        Objects.requireNonNull(vista, "La vista no puede ser nula.");
-        this.modelo = modelo;
-        this.vista = vista;
+    public Controlador(FabricaModelo fabricaModelo, FabricaFuenteDatos fabricaFuenteDatos, FabricaVista fabricaVista) {
+        this.modelo = fabricaModelo.crear(fabricaFuenteDatos);
+        this.vista = fabricaVista.crear();
         this.vista.getGestorEventos().suscribir(this,Evento.values());
 
     }
