@@ -3,9 +3,10 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import java.util.Objects;
 
 public class Cliente {
-    private static final String ER_NOMBRE = "[A-ZÁÉÍÓÚ][a-záéíóú]+( [A-ZÁÉÍÓÚ][a-záéíóú]+)*";
+    private static final String ER_NOMBRE = "[A-ZÁÉÍÓÚÑ][a-záéíóúüñ]+(?: [A-ZÁÉÍÓÚ][a-záéíóúüñ]+)*+";
     private static final String ER_DNI = "\\d{8}[A-Z]";
     private static final String ER_TELEFONO = "\\d{9}";
+
     private String nombre;
     private String dni;
     private String telefono;
@@ -51,10 +52,10 @@ public class Cliente {
     }
 
     private boolean comprobarLetraDni(String dni) {
-        String letraDni = dni.substring(dni.length() - 1);
-        int numeroDni = Integer.parseInt(dni.substring(0, dni.length()-1));
-        String[] letras = {"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"};
-        return (letraDni.equals(letras[numeroDni % 23]));
+        String letrasDni = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int numero = Integer.parseInt(dni.substring(0, 8));
+        char letra = dni.charAt(8);
+        return letra == letrasDni.charAt(numero % 23);
     }
 
     public String getTelefono() {
@@ -62,7 +63,7 @@ public class Cliente {
     }
 
     public void setTelefono(String telefono) {
-        Objects.requireNonNull(telefono, "El teléfono no puede ser nulo.");
+        Objects.requireNonNull(telefono,"El teléfono no puede ser nulo.");
         if (!telefono.matches(ER_TELEFONO)) {
             throw new IllegalArgumentException("El teléfono no tiene un formato válido.");
         }
@@ -70,14 +71,13 @@ public class Cliente {
     }
 
     public static Cliente get(String dni) {
-        return new Cliente("Fiat", dni, "663420880");
+        return new Cliente("Bob Esponja", dni, "111222333");
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
+        if (!(o instanceof Cliente cliente)) return false;
         return Objects.equals(dni, cliente.dni);
     }
 
@@ -88,6 +88,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return String.format("%s - %s (%s)", this.nombre, this.dni, this.telefono);
+        return String.format("%s - %s (%s)", nombre, dni, telefono);
     }
 }
