@@ -1,8 +1,9 @@
  package org.iesalandalus.programacion.tallermecanico.vista.eventos;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public enum Evento {
+ public enum Evento {
     INSERTAR_CLIENTE(0, "Insertar cliente"),
     BUSCAR_CLIENTE(1, "Buscar cliente"),
     BORRAR_CLIENTE(2, "Borrar cliente"),
@@ -26,12 +27,11 @@ public enum Evento {
 
     private final int codigo;
     private final String texto;
-    private static final HashMap<Integer, Evento> evento;
+    private static final Map<Integer, Evento> eventos = new HashMap<>();
 
     static {
-        evento = new HashMap<>();
-        for (int i = 0; i < Evento.values().length; i++) {
-            evento.put(i, Evento.values()[i]);
+        for (Evento evento : values()) {
+            eventos.put(evento.codigo, evento);
         }
     }
 
@@ -40,18 +40,23 @@ public enum Evento {
         this.texto = texto;
     }
 
-    public void esValida(int codigo) {
-
-        evento.containsKey(codigo);
-
+    public int getCodigo() {
+        return codigo;
     }
 
-    public  Evento get(int codigo) {
-        return evento.get(codigo);
+    public static boolean esValido(int codigo) {
+        return eventos.containsKey(codigo);
+    }
+
+    public static Evento get(int codigo) {
+        if (!esValido(codigo)) {
+            throw new IllegalArgumentException("El código no es correcto.");
+        }
+        return eventos.get(codigo);
     }
 
     @Override
     public String toString() {
-        return String.format("%d. %s", codigo, texto);
+        return texto;
     }
 }

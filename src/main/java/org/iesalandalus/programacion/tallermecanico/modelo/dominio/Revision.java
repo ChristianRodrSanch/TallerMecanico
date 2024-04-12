@@ -12,27 +12,20 @@ public class Revision extends Trabajo {
 
 
     public Revision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
-        super(cliente,vehiculo,fechaInicio);
-        setCliente(cliente);
-        setVehiculo(vehiculo);
-        setFechaInicio(fechaInicio);
+        super(cliente, vehiculo, fechaInicio);
     }
+
 
     @Override
     public float getPrecioEspecifico() {
-        return  (FACTOR_HORA * getHoras());
+        return (estaCerrado()) ? FACTOR_HORA * getHoras() : 0;
     }
+
 
     public Revision(Revision revision) {
         super(revision);
-        Objects.requireNonNull(revision, "La revisión no puede ser nula.");
-        cliente = new Cliente(revision.cliente);
-        vehiculo = revision.vehiculo;
-        fechaInicio = revision.fechaInicio;
-        horas = revision.horas;
-        precioMaterial = revision.precioMaterial;
-        fechaFin = revision.fechaFin;
     }
+
 
     public String toString() {
         String mensaje;

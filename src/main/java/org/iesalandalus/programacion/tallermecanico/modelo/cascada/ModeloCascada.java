@@ -2,10 +2,7 @@ package org.iesalandalus.programacion.tallermecanico.modelo.cascada;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.*;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
@@ -19,22 +16,25 @@ public class ModeloCascada implements Modelo {
     private IClientes clientes;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
-        clientes = fabricaFuenteDatos.crear().crearClientes();
-        vehiculos = fabricaFuenteDatos.crear().crearVehiculos();
-        trabajos = fabricaFuenteDatos.crear().crearTrabajos();
+        Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente de datos no puede ser nula.");
+        IFuenteDatos fuenteDatos = fabricaFuenteDatos.crear();
+        clientes = fuenteDatos.crearClientes();
+        vehiculos = fuenteDatos.crearVehiculos();
+        trabajos = fuenteDatos.crearTrabajos();
     }
 
     @Override
     public void comenzar() {
-        System.out.print("El Modelo acaba de iniciarse.");
+        System.out.println("Modelo comenzado.");
     }
+
     @Override
     public void terminar() {
-        System.out.print("El modelo ha terminado de ejecutarse.");
+        System.out.println("Modelo terminado.");
     }
+
     @Override
     public void insertar(Cliente cliente) throws OperationNotSupportedException {
-        Objects.requireNonNull(cliente, "El cliente a insertar no puede ser nulo.");
         clientes.insertar(new Cliente(cliente));
     }
     @Override
@@ -43,16 +43,20 @@ public class ModeloCascada implements Modelo {
     }
     @Override
     public void insertar(Trabajo trabajo) throws OperationNotSupportedException {
-        Objects.requireNonNull(trabajo, "La revisión a insertar no puede ser nula.");
         Cliente cliente = clientes.buscar(trabajo.getCliente());
         Vehiculo vehiculo = vehiculos.buscar(trabajo.getVehiculo());
-        trabajos.insertar(new Revision(cliente, vehiculo, trabajo.getFechaInicio()));
-
+        if (trabajo instanceof Revision) {
+            trabajo = new Revision(cliente, vehiculo, trabajo.getFechaInicio());
+        } else {
+            trabajo = new Mecanico(cliente, vehiculo, trabajo.getFechaInicio());
+        }
+        trabajos.insertar(trabajo);
     }
+
     @Override
     public Cliente buscar(Cliente cliente) {
         Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
-        return new Cliente(cliente);
+        return clientes.buscar(cliente);
     }
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
@@ -61,14 +65,8 @@ public class ModeloCascada implements Modelo {
     }
     @Override
     public Trabajo buscar(Trabajo trabajo) {
-        Objects.requireNonNull(trabajos.buscar(trabajo), "El trabajo no puede ser nulo buscar.");
-        Trabajo trabajoEncontrado = null;
-        if (trabajo instanceof Revision revision) {
-            trabajoEncontrado = new Revision(revision);
-        } else if (trabajo instanceof Mecanico mecanico) {
-            trabajoEncontrado = new Mecanico(mecanico);
-        }
-        return trabajoEncontrado;
+        trabajo = Objects.requireNonNull(trabajos.buscar(trabajo), "No existe un trabajo igual.");
+        return Trabajo.copiar(trabajo);
     }
     @Override
     public boolean modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException {
@@ -89,32 +87,31 @@ public class ModeloCascada implements Modelo {
     }
     @Override
     public void borrar(Cliente cliente) throws OperationNotSupportedException {
-        Objects.requireNonNull(cliente, "El cliente no puede ser nulo borrar.");
-        for (Trabajo trabajo : trabajos.get(cliente)) {
+        List<Trabajo> trabajosCliente = trabajos.get(cliente);
+        for (Trabajo trabajo : trabajosCliente) {
             trabajos.borrar(trabajo);
         }
         clientes.borrar(cliente);
     }
     @Override
     public void borrar(Vehiculo vehiculo) throws OperationNotSupportedException {
-        Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo borrar.");
-        for (Trabajo trabajo : trabajos.get(vehiculo)) {
+        List<Trabajo> trabajosVehiculo = trabajos.get(vehiculo);
+        for (Trabajo trabajo : trabajosVehiculo) {
             trabajos.borrar(trabajo);
         }
         vehiculos.borrar(vehiculo);
     }
     @Override
     public void borrar(Trabajo trabajo) throws OperationNotSupportedException {
-        Objects.requireNonNull(trabajo, "La revisión no puede ser nula borrar.");
         trabajos.borrar(trabajo);
     }
     @Override
     public List<Cliente> getClientes() {
-        List<Cliente> listaClientes = new ArrayList<>();
+        List<Cliente> copiaClientes = new ArrayList<>();
         for (Cliente cliente : clientes.get()) {
-            listaClientes.add(new Cliente(cliente));
+            copiaClientes.add(new Cliente(cliente));
         }
-        return listaClientes;
+        return copiaClientes;
     }
     @Override
     public List<Vehiculo> getVehiculos() {
@@ -123,40 +120,26 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public List<Trabajo> getTrabajos() {
-        List<Trabajo> listaRevision = new ArrayList<>();
+        List<Trabajo> copiaTrabajos = new ArrayList<>();
         for (Trabajo trabajo : trabajos.get()) {
-            if (trabajo instanceof Revision revision) {
-                listaRevision.add(new Revision(revision));
-            } else if (trabajo instanceof Mecanico mecanico) {
-                listaRevision.add(new Mecanico(mecanico));
-            }
+            copiaTrabajos.add(Trabajo.copiar(trabajo));
         }
-        return listaRevision;
+        return copiaTrabajos;
     }
     @Override
     public List<Trabajo> getTrabajos(Cliente cliente) {
-        Objects.requireNonNull(cliente, "El cliente no puede ser nulo getRevisiones.");
-        List<Trabajo> trabajoCliente = new ArrayList<>();
+        List<Trabajo> trabajosCliente = new ArrayList<>();
         for (Trabajo trabajo : trabajos.get(cliente)) {
-            if (trabajo instanceof Revision revision) {
-                trabajoCliente.add(new Revision(revision));
-            } else if (trabajo instanceof Mecanico mecanico) {
-                trabajoCliente.add(new Mecanico(mecanico));
-            }
+            trabajosCliente.add(Trabajo.copiar(trabajo));
         }
-        return trabajoCliente;
+        return trabajosCliente;
     }
     @Override
     public List<Trabajo> getTrabajos(Vehiculo vehiculo) {
-        Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo getRevisiones.");
-        List<Trabajo> trabajoVehiculo = new ArrayList<>();
+        List<Trabajo> trabajosCliente = new ArrayList<>();
         for (Trabajo trabajo : trabajos.get(vehiculo)) {
-            if (trabajo instanceof Revision revision) {
-                trabajoVehiculo.add(new Revision(revision));
-            } else if (trabajo instanceof Mecanico mecanico) {
-                trabajoVehiculo.add(new Mecanico(mecanico));
-            }
+            trabajosCliente.add(Trabajo.copiar(trabajo));
         }
-        return trabajoVehiculo;
+        return trabajosCliente;
     }
 }

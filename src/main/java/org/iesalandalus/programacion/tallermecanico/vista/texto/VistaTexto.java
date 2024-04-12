@@ -20,7 +20,7 @@ import static org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*
 
 public class VistaTexto implements Vista {
 
-    private GestorEventos gestorEventos;
+    private final GestorEventos gestorEventos = new GestorEventos(Evento.values());
 
     @Override
     public GestorEventos getGestorEventos(){
@@ -29,12 +29,21 @@ public class VistaTexto implements Vista {
 
     }
 
+    private void ejecutar(Evento opcion) {
+        Consola.mostrarCabecera(opcion.toString());
+        gestorEventos.notificar(opcion);
+    }
+
 
 
     @Override
     public void comenzar() {
-
-        System.out.println("La VistaTexto acaba de iniciarse.");
+        Evento opcion;
+        do {
+            Consola.mostrarMenu();
+            opcion = Consola.elegirOpcion();
+            ejecutar(opcion);
+        } while (opcion != Evento.SALIR);
     }
 
 
@@ -96,9 +105,9 @@ public class VistaTexto implements Vista {
 
     @Override
     public Trabajo leerMecanico() {
-       Cliente cliente = leerCliente();
-       Vehiculo vehiculo = leerVehiculo();
-       LocalDate fechaInicio = leerFecha("Introduce la fecha de inicio");
+        Cliente cliente = leerCliente();
+        Vehiculo vehiculo = leerVehiculo();
+        LocalDate fechaInicio = leerFecha("Introduce la fecha de inicio");
         return  new Mecanico(cliente,vehiculo,fechaInicio);
 
     }
@@ -109,7 +118,7 @@ public class VistaTexto implements Vista {
 
         Vehiculo vehiculo = leerVehiculoMatricula();
 
-      return new Revision(Cliente.get("77697729A"),vehiculo,LocalDate.now());
+        return new Revision(Cliente.get("77697729A"),vehiculo,LocalDate.now());
 
     }
 
@@ -136,7 +145,7 @@ public class VistaTexto implements Vista {
         Objects.requireNonNull(evento, "No puedo notificar un evento nulo.");
         Objects.requireNonNull(texto, "No puedo mostrar un texto nulo.");
         if (exito) {
-            System.out.printf("%s%n", texto);
+            System.out.printf(texto);
         } else {
             System.out.printf("ERROR: %s%n", texto);
         }
@@ -164,31 +173,40 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarClientes(List<Cliente> clientes) {
+        if(!clientes.isEmpty()){
+            for (Cliente cliente : clientes) {
+                System.out.println(cliente.toString());
 
-        for (Cliente cliente : clientes) {
-            System.out.println(cliente.toString());
+            }
 
-
+        } else {
+            System.out.println("No hay cliente que mostrar");
         }
     }
 
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
+        if (!vehiculos.isEmpty()) {
+            for (Vehiculo vehiculo : vehiculos) {
+                System.out.println(vehiculo.toString());
 
-        for (Vehiculo vehiculo : vehiculos) {
-            System.out.println(vehiculo.toString());
 
+            }
 
+        } else {
+            System.out.println("No hay vehiculo para mostrar");
         }
-
     }
 
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
-        for (Trabajo trabajo : trabajos) {
-            System.out.println(trabajo.toString());
+        if (!trabajos.isEmpty()) {
+            for (Trabajo trabajo : trabajos) {
+                System.out.println(trabajo.toString());
 
-
+            }
+        } else {
+            System.out.println("No hay trabajo para mostrar");
         }
     }
 

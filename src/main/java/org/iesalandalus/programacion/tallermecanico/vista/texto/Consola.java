@@ -10,60 +10,60 @@ import java.util.regex.Pattern;
 
 public class Consola {
 
-        private static final String  CADENA_FORMATO_FECHA = "dd/MM/yyyy";
+    private static final String CADENA_FORMATO_FECHA ="dd/MM/yyyy";
 
-        private Consola() {
+    private Consola() {}
 
+    static void mostrarCabecera(String mensaje) {
+        System.out.printf("%n%s%n", mensaje);
+        String formatoStr = "%0" + mensaje.length() + "d%n";
+        System.out.println(String.format(formatoStr, 0).replace("0", "-"));
+    }
+
+    static void mostrarMenu() {
+        mostrarCabecera("Gestión de un taller mecánico.");
+        for (Evento opcion : Evento.values()) {
+            System.out.printf("%d.- %s%n", opcion.getCodigo(), opcion);
         }
+    }
 
-        public static void mostrarCabecera(String mensaje) {
-                System.out.println(mensaje);
-                System.out.println("-".repeat(mensaje.length()));
+    static Evento elegirOpcion() {
+        Evento opcion = null;
+        do {
+            try {
+                opcion = Evento.get(leerEntero("\nElige un opción: "));
+            } catch (IllegalArgumentException e) {
+                System.out.printf("ERROR: %s%n", e.getMessage());
+            }
+        } while (opcion == null);
+        return opcion;
+    }
+
+    static int leerEntero(String mensaje) {
+        System.out.print(mensaje);
+        return Entrada.entero();
+    }
+
+    static float leerReal(String mensaje) {
+        System.out.print(mensaje);
+        return Entrada.real();
+    }
+
+    static String leerCadena(String mensaje) {
+        System.out.print(mensaje);
+        return Entrada.cadena();
+    }
+
+    static LocalDate leerFecha(String mensaje) {
+        LocalDate fecha;
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(CADENA_FORMATO_FECHA);
+        mensaje = String.format("%s (%s): ", mensaje, CADENA_FORMATO_FECHA);
+        try {
+            fecha = LocalDate.parse(leerCadena(mensaje), formatoFecha);
+        } catch (DateTimeParseException e) {
+            fecha = null;
         }
-
-      public   static void mostrarMenu() {
-                mostrarCabecera("Programa que simula la gestión de un taller mecánico");
-                for (int i = 0; i < Evento.values().length; i++) {
-                        System.out.println(Evento.values()[i]);
-                }
-        }
-
-      public  static Evento elegirOpcion() {
-                boolean esOpcionValida = false;
-                Evento opcion = null;
-                do {
-                        try {
-                                opcion = Evento.(leerEntero("Introduce la opción a ejecutar: "));
-                                esOpcionValida = true;
-                        } catch (IllegalArgumentException e) {
-                                System.out.println(e.getMessage());
-                        }
-                } while (!esOpcionValida);
-                return opcion;
-        }
-
-        public static String leerCadena(String mensaje) {
-                System.out.print(mensaje);
-                return Entrada.cadena();
-        }
-
-        public   static LocalDate leerFecha(String mensaje) {
-                Pattern patron = Pattern.compile(CADENA_FORMATO_FECHA);
-                DateTimeFormatter comparador = DateTimeFormatter.ofPattern(String.valueOf(patron));
-                LocalDate fecha = null;
-                try {
-                        String cadenaFecha = leerCadena(mensaje);
-                        fecha = LocalDate.parse(cadenaFecha, comparador);
-                } catch (DateTimeParseException e) {
-                        System.out.println("La fecha introducida no es válida, inténtelo de nuevo.");
-                }
-                return fecha;
-        }
-
-        public static int leerEntero(String mensaje) {
-                System.out.print(mensaje);
-                return Entrada.entero();
-        }
-
+        return fecha;
+    }
 
 }

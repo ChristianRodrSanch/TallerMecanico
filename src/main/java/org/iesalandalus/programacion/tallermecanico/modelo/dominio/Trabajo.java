@@ -23,6 +23,8 @@ public abstract class Trabajo {
         setCliente(cliente);
         setVehiculo(vehiculo);
         setFechaInicio(fechaInicio);
+        fechaFin = null;
+        horas = 0;
 
     }
 
@@ -31,22 +33,24 @@ public abstract class Trabajo {
         cliente = trabajo.cliente;
         vehiculo = trabajo.vehiculo;
         fechaInicio = trabajo.fechaInicio;
+        fechaFin = trabajo.fechaFin;
+        horas = trabajo.horas;
     }
 
     public  static Trabajo copiar(Trabajo trabajo) {
-            Objects.requireNonNull(trabajo,"El trabajo no puede ser nulo.");
-        if (trabajo instanceof Revision) {
-            return new Revision((Revision)trabajo);
-        } else if (trabajo instanceof Mecanico) {
-            return new Mecanico((Mecanico)trabajo);
-        } else {
-            throw new IllegalArgumentException("El parametro pasado no es ninguna subclase de Trabajo");
+        Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
+        Trabajo trabajoCopiado = null;
+        if (trabajo instanceof Revision revision) {
+            trabajoCopiado = new Revision(revision);
+        } else if (trabajo instanceof Mecanico mecanico) {
+            trabajoCopiado = new Mecanico(mecanico);
         }
-
+        return trabajoCopiado;
     }
 
     public static Trabajo get(Vehiculo vehiculo) {
-        return new Revision(Cliente.get("77697729A"),vehiculo,LocalDate.now());
+        Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
+        return new Revision(Cliente.get("11111111H"), vehiculo, LocalDate.now());
     }
 
 
@@ -94,15 +98,7 @@ public abstract class Trabajo {
         return horas;
     }
 
-    public void anadirPrecioMaterial(float precioMaterial) throws OperationNotSupportedException {
-        if (precioMaterial <= 0f) {
-            throw new IllegalArgumentException("El precio del material a añadir debe ser mayor que cero.");
-        }
-        if (getFechaFin() != null) {
-            throw new OperationNotSupportedException("No se puede añadir precio del material, ya que la revisión está cerrada.");
-        }
-        this.precioMaterial += precioMaterial;
-    }
+
 
 
     public void anadirHoras(int horas) throws OperationNotSupportedException {

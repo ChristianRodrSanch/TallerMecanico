@@ -10,19 +10,13 @@ import java.util.List;
 
 public interface ITrabajos {
 
-    public List<Trabajo> get();
+    List<Trabajo> get();
 
-    public List<Trabajo> get(Cliente cliente);
+    List<Trabajo> get(Cliente cliente);
 
-    public List<Trabajo> get(Vehiculo vehiculo);
+    List<Trabajo> get(Vehiculo vehiculo);
 
-    public void insertar (Trabajo trabajo) throws OperationNotSupportedException;
-
-    public void añadirHoras(int horas,Trabajo trabajo);
-
-    public void añadirPrecioMaterial(Trabajo trabajo,float precioMaterial);
-
-    public void cerrar (LocalDate fechaFin, Trabajo trabajo);
+    void insertar(Trabajo trabajo) throws OperationNotSupportedException;
 
     void anadirHoras(Trabajo trabajo, int horas) throws OperationNotSupportedException;
 
@@ -30,7 +24,7 @@ public interface ITrabajos {
 
     void cerrar(Trabajo trabajo, LocalDate fechaFin) throws OperationNotSupportedException;
 
-    public Trabajo buscar(Trabajo trabajo);
+    Trabajo buscar(Trabajo trabajo);
 
-    public void borrar(Trabajo trabajo) throws OperationNotSupportedException;
+    void borrar(Trabajo trabajo) throws OperationNotSupportedException;
 }

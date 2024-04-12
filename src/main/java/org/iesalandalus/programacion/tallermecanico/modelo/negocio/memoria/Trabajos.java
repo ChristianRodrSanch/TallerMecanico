@@ -51,20 +51,7 @@ public class Trabajos implements ITrabajos {
         coleccionTrabajos.add(trabajo);
     }
 
-    @Override
-    public void añadirHoras(int horas, Trabajo trabajo) {
 
-    }
-
-    @Override
-    public void añadirPrecioMaterial(Trabajo trabajo, float precioMaterial) {
-
-    }
-
-    @Override
-    public void cerrar(LocalDate fechaFin, Trabajo trabajo) {
-
-    }
 
     @Override
     public int hashCode() {

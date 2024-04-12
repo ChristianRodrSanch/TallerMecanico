@@ -16,11 +16,7 @@ public interface Vista {
 
     void comenzar();
 
-    default void ejecutar(Evento opcion) throws OperationNotSupportedException, InterruptedException {
 
-        Consola.mostrarCabecera(opcion.toString());
-        gestorEventos.notificar(opcion);
-    }
 
     void terminar();
 
