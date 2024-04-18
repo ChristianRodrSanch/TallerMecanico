@@ -4,12 +4,38 @@ import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 
 import javax.naming.OperationNotSupportedException;
+import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Trabajos implements ITrabajos {
+
+    private static final String FICHEROS_TRABAJOS =  String.format("%s%s%s","ficheros", File.separator,"trabajos.xml");
+
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    private  static final String RAIZ = "trabajos";
+
+    private static final String TRABAJO =  "trabajo";
+
+    private static final String CLIENTE =  "cliente";
+
+    private static final String VEHICULO =  "vehiculo";
+
+    private static final String FECHA_INICIO = "fechaInicio";
+
+    private static final String FECHA_FIN = "fechaFin";
+
+    private static final String HORAS = "horas";
+
+    private static final String PRECIO_MATERIAL = "precioMaterial";
+
+    private static final String TIPO = "tipo";
+
+    private static final String REVISION = "revision";
+
+    private static final String MECANICO = "mecanico";
 
     private final List<Trabajo> coleccionTrabajos;
 
@@ -32,6 +58,30 @@ public class Trabajos implements ITrabajos {
         }
         return revisionTrabajo;
     }
+
+    public Map<TipoTrabajo,Integer> getEstadisticasMensuales(LocalDate mes) {
+        Map<TipoTrabajo, Integer> estadisticas = inicializarEstadisticas(); // declaro el mapa y le digo que es igual al metodo iniciazliar estadisticas
+
+        for(Trabajo trabajo : coleccionTrabajos) {
+            LocalDate fechaTrabajo = trabajo.getFechaFin();
+            if (fechaTrabajo.getMonth().equals(mes.getMonth()) && fechaTrabajo.getYear() == mes.getYear()) {
+                TipoTrabajo tipoTrabajo = TipoTrabajo.get(trabajo);
+                estadisticas.put(tipoTrabajo,estadisticas.get(tipoTrabajo) + 1); // el +1 es  basicamente contar .
+
+            }
+        }
+
+        return estadisticas;
+    }
+
+    private Map<TipoTrabajo,Integer> inicializarEstadisticas() { // esto inicializa el mapa y pone sus valores a 0
+        Map<TipoTrabajo,Integer> estadisticas = new HashMap<>();
+        for (TipoTrabajo trabajo : TipoTrabajo.values()) {
+            estadisticas.put(trabajo,0);
+        }
+        return  estadisticas;
+    }
+
 
     @Override
     public List<Trabajo> get(Vehiculo vehiculo) { // Los trabajos para vehículo
