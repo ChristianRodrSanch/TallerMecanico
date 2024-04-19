@@ -2,6 +2,7 @@ package org.iesalandalus.programacion.tallermecanico.vista.texto;
 
 import com.sun.source.tree.TryTree;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
@@ -12,10 +13,7 @@ import javax.sound.midi.SysexMessage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*;
@@ -118,7 +116,7 @@ public class VistaTexto implements Vista {
     @Override
     public Trabajo leerTrabajoVehiculo(){
 
-       return Trabajo.get(leerVehiculoMatricula());
+        return Trabajo.get(leerVehiculoMatricula());
 
     }
 
@@ -179,6 +177,7 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarClientes(List<Cliente> clientes) {
+        clientes.sort(Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni));
         if(!clientes.isEmpty()){
             for (Cliente cliente : clientes) {
                 System.out.println(cliente.toString());
@@ -192,6 +191,7 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
+        vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
         if (!vehiculos.isEmpty()) {
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo.toString());
@@ -206,6 +206,8 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
+        Comparator<Cliente> clienteOrdenar = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
+        trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente,clienteOrdenar));
         if (!trabajos.isEmpty()) {
             for (Trabajo trabajo : trabajos) {
                 System.out.println(trabajo.toString());
