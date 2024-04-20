@@ -11,6 +11,11 @@ public enum TipoTrabajo {
 
     }
 
+    @Override
+    public String toString() {
+        return  nombre;
+    }
+
     public static TipoTrabajo get(Trabajo trabajo) {
         if (trabajo instanceof Mecanico) {
             return MECANICO;
@@ -20,5 +25,7 @@ public enum TipoTrabajo {
         }else {
             throw new IllegalArgumentException("El trabajo pasado no es valido ");
         }
+
+
     }
 }

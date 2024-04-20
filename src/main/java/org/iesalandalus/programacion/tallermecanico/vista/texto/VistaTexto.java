@@ -1,20 +1,12 @@
 package org.iesalandalus.programacion.tallermecanico.vista.texto;
 
-import com.sun.source.tree.TryTree;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
-import org.iesalandalus.programacion.utilidades.Entrada;
 
-import javax.naming.OperationNotSupportedException;
-import javax.sound.midi.SysexMessage;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*;
 
@@ -150,9 +142,7 @@ public class VistaTexto implements Vista {
     }
 
     public LocalDate leerMes() {
-        String mensaje = "Ingrese una fecha para obtener el mes: ";
-        LocalDate fecha = Consola.leerFecha(mensaje);
-        return LocalDate.of(fecha.getYear(), fecha.getMonth(),1);
+        return Consola.leerFecha("Introduce la fecha que desea leer el mes. ");
     }
 
 
@@ -191,8 +181,9 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
-        vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
         if (!vehiculos.isEmpty()) {
+            vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
+
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo.toString());
 
@@ -206,9 +197,10 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
-        Comparator<Cliente> clienteOrdenar = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
-        trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente,clienteOrdenar));
+        Comparator<Cliente> comparadorCliente = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
         if (!trabajos.isEmpty()) {
+            trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente,comparadorCliente));
+
             for (Trabajo trabajo : trabajos) {
                 System.out.println(trabajo.toString());
 
