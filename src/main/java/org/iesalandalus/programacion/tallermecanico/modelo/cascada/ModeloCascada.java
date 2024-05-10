@@ -8,12 +8,13 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
-    private ITrabajos trabajos;
-    private IVehiculos vehiculos;
-    private IClientes clientes;
+    private final IClientes clientes;
+    private final IVehiculos vehiculos;
+    private final ITrabajos trabajos;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
         Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente de datos no puede ser nula.");
@@ -25,11 +26,17 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public void comenzar() {
+        clientes.comenzar();
+        vehiculos.comenzar();
+        trabajos.comenzar();
         System.out.println("Modelo comenzado.");
     }
 
     @Override
     public void terminar() {
+        trabajos.terminar();
+        vehiculos.terminar();
+        clientes.terminar();
         System.out.println("Modelo terminado.");
     }
 
@@ -37,10 +44,12 @@ public class ModeloCascada implements Modelo {
     public void insertar(Cliente cliente) throws OperationNotSupportedException {
         clientes.insertar(new Cliente(cliente));
     }
+
     @Override
     public void insertar(Vehiculo vehiculo) throws OperationNotSupportedException {
         vehiculos.insertar(vehiculo);
     }
+
     @Override
     public void insertar(Trabajo trabajo) throws OperationNotSupportedException {
         Cliente cliente = clientes.buscar(trabajo.getCliente());
@@ -55,19 +64,22 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public Cliente buscar(Cliente cliente) {
-        Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
-        return clientes.buscar(cliente);
+        cliente = Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
+        return new Cliente(cliente);
     }
+
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
-        Objects.requireNonNull(vehiculos.buscar(vehiculo), "El vehículo no puede ser nulo buscar.");
+        vehiculo = Objects.requireNonNull(vehiculos.buscar(vehiculo), "No existe un vehículo igual.");
         return vehiculo;
     }
+
     @Override
     public Trabajo buscar(Trabajo trabajo) {
         trabajo = Objects.requireNonNull(trabajos.buscar(trabajo), "No existe un trabajo igual.");
         return Trabajo.copiar(trabajo);
     }
+
     @Override
     public boolean modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException {
         return clientes.modificar(cliente, nombre, telefono);
@@ -77,14 +89,17 @@ public class ModeloCascada implements Modelo {
     public void anadirHoras(Trabajo trabajo, int horas) throws OperationNotSupportedException {
         trabajos.anadirHoras(trabajo, horas);
     }
+
     @Override
     public void anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws OperationNotSupportedException {
         trabajos.anadirPrecioMaterial(trabajo, precioMaterial);
     }
+
     @Override
     public void cerrar(Trabajo trabajo, LocalDate fechaFin) throws OperationNotSupportedException {
         trabajos.cerrar(trabajo, fechaFin);
     }
+
     @Override
     public void borrar(Cliente cliente) throws OperationNotSupportedException {
         List<Trabajo> trabajosCliente = trabajos.get(cliente);
@@ -93,6 +108,7 @@ public class ModeloCascada implements Modelo {
         }
         clientes.borrar(cliente);
     }
+
     @Override
     public void borrar(Vehiculo vehiculo) throws OperationNotSupportedException {
         List<Trabajo> trabajosVehiculo = trabajos.get(vehiculo);
@@ -101,10 +117,12 @@ public class ModeloCascada implements Modelo {
         }
         vehiculos.borrar(vehiculo);
     }
+
     @Override
     public void borrar(Trabajo trabajo) throws OperationNotSupportedException {
         trabajos.borrar(trabajo);
     }
+
     @Override
     public List<Cliente> getClientes() {
         List<Cliente> copiaClientes = new ArrayList<>();
@@ -113,6 +131,7 @@ public class ModeloCascada implements Modelo {
         }
         return copiaClientes;
     }
+
     @Override
     public List<Vehiculo> getVehiculos() {
         return vehiculos.get();
@@ -126,6 +145,7 @@ public class ModeloCascada implements Modelo {
         }
         return copiaTrabajos;
     }
+
     @Override
     public List<Trabajo> getTrabajos(Cliente cliente) {
         List<Trabajo> trabajosCliente = new ArrayList<>();
@@ -134,6 +154,7 @@ public class ModeloCascada implements Modelo {
         }
         return trabajosCliente;
     }
+
     @Override
     public List<Trabajo> getTrabajos(Vehiculo vehiculo) {
         List<Trabajo> trabajosCliente = new ArrayList<>();
@@ -142,4 +163,10 @@ public class ModeloCascada implements Modelo {
         }
         return trabajosCliente;
     }
+
+    @Override
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        return trabajos.getEstadisticasMensuales(mes);
+    }
+
 }

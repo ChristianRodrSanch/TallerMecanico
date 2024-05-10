@@ -1,20 +1,12 @@
 package org.iesalandalus.programacion.tallermecanico.vista.texto;
 
-import com.sun.source.tree.TryTree;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
-import org.iesalandalus.programacion.utilidades.Entrada;
 
-import javax.naming.OperationNotSupportedException;
-import javax.sound.midi.SysexMessage;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.*;
 
 import static org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*;
 
@@ -73,12 +65,12 @@ public class VistaTexto implements Vista {
 
     @Override
     public  String leerNuevoNombre() {
-        return leerCadena("Introduce el nuevo nombre del cliente: ");
+        return Consola.leerCadena("Introduce el nuevo nombre del cliente: ");
     }
 
     @Override
     public  String leerNuevoTelefono() {
-        return leerCadena("Introduce el nuevo teléfono del cliente: ");
+        return Consola.leerCadena("Introduce el nuevo teléfono del cliente: ");
     }
 
     @Override
@@ -116,9 +108,7 @@ public class VistaTexto implements Vista {
     @Override
     public Trabajo leerTrabajoVehiculo(){
 
-        Vehiculo vehiculo = leerVehiculoMatricula();
-
-        return new Revision(Cliente.get("77697729A"),vehiculo,LocalDate.now());
+        return Trabajo.get(leerVehiculoMatricula());
 
     }
 
@@ -126,18 +116,18 @@ public class VistaTexto implements Vista {
 
     @Override
     public  int leerHoras() {
-        return leerEntero("Introduce su correspondiente número de horas: ");
+        return Consola.leerEntero("Introduce su correspondiente número de horas: ");
     }
 
     @Override
     public  float leerPrecioMaterial() {
-        System.out.print("Introduce su correspondiente precio material: ");
-        return Entrada.real();
+        return Consola.leerReal("Introduce el precio del material a añadir: ");
     }
+
 
     @Override
     public  LocalDate leerFechaCierre() {
-        return leerFecha("Introduce la fecha de cierre de la revisión: ");
+        return Consola.leerFecha("Introduce la fecha de cierre");
     }
 
     @Override
@@ -151,28 +141,33 @@ public class VistaTexto implements Vista {
         }
     }
 
+    public LocalDate leerMes() {
+        return Consola.leerFecha("Introduce la fecha que desea leer el mes. ");
+    }
+
+
     @Override
     public void mostrarCliente(Cliente cliente) {
 
-        System.out.println(cliente.toString());
-
+        System.out.println((cliente != null) ? cliente : "No existe ningún cliente con dicho DNI.");
 
     }
 
     @Override
     public void mostrarVehiculo(Vehiculo vehiculo) {
-        System.out.println(vehiculo.toString());
+        System.out.println((vehiculo != null) ? vehiculo : "No existe ningún vehículo con dicha matrícula.");
     }
 
     @Override
     public void mostrarTrabajo(Trabajo trabajo) {
 
-        System.out.println(trabajo.toString());
+        System.out.println((trabajo != null) ? trabajo : "No existe ningún trabajo para ese cliente, vehículo y fecha.");
 
     }
 
     @Override
     public void mostrarClientes(List<Cliente> clientes) {
+        clientes.sort(Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni));
         if(!clientes.isEmpty()){
             for (Cliente cliente : clientes) {
                 System.out.println(cliente.toString());
@@ -187,6 +182,8 @@ public class VistaTexto implements Vista {
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
         if (!vehiculos.isEmpty()) {
+            vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
+
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo.toString());
 
@@ -200,7 +197,10 @@ public class VistaTexto implements Vista {
 
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
+        Comparator<Cliente> comparadorCliente = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
         if (!trabajos.isEmpty()) {
+            trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente,comparadorCliente));
+
             for (Trabajo trabajo : trabajos) {
                 System.out.println(trabajo.toString());
 
@@ -210,179 +210,17 @@ public class VistaTexto implements Vista {
         }
     }
 
+    @Override
+    public void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas) {
+        for (Map.Entry<TipoTrabajo,Integer> estadistica : estadisticas.entrySet()) { // Coge las entradas del mapa
+            System.out.println("Tipo trabajo" + estadistica.getKey()); // Aquí asigna su clave en este caso que trabajo sería
+            System.out.println("Valores de las Estadisticas" + estadistica.getValue()); // Y aqui le asigna su valor
 
+        }
+    }
 
 
 }
 
 
 
-   /* private void insertarCliente() {
-        Consola.mostrarCabecera("INSERTAR CLIENTE");
-        try {
-            gestorEventos.insertar(Consola.leerCliente());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void insertarVehiculo() {
-        Consola.mostrarCabecera("INSERTAR VEHÍCULO");
-        try {
-            gestorEventos.insertar(Consola.leerVehiculo());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void insertarRevision() { //
-        Consola.mostrarCabecera("INSERTAR REVISIÓN");
-        try {
-            gestorEventos.insertar(new Revision(Consola.leerClienteDni(), Consola.leerVehiculoMatricula(), Consola.leerFecha("Introduce la fecha de inicio:"))); // Ya busca el dni solo
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void buscarCliente() {
-        Consola.mostrarCabecera("BUSCAR CLIENTE");
-        try {
-            System.out.println(gestorEventos.buscar(Consola.leerClienteDni()));
-        } catch (IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void buscarVehiculo() {
-        Consola.mostrarCabecera("BUSCAR VEHÍCULO");
-        try {
-            System.out.println(gestorEventos.buscar(Consola.leerVehiculoMatricula()));
-        } catch (IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void buscarRevision() {
-        Consola.mostrarCabecera("BUSCAR REVISIÓN");
-        try {
-            System.out.println(gestorEventos.buscar(Consola.leerRevision()));
-        } catch (IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void modificarCliente() {
-        Consola.mostrarCabecera("MODIFICAR CLIENTE");
-        boolean esModificado = false;
-        try {
-            esModificado = gestorEventos.modificar(Consola.leerClienteDni(), Consola.leerNuevoNombre(), Consola.leerNuevoTelefono());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-        if (esModificado) {
-            System.out.println("El cliente se ha podido modificar correctamente.");
-        }
-    }
-
-    private void anadirHoras() {
-        Consola.mostrarCabecera("AÑADIR HORAS");
-        try {
-            Cliente cliente = Consola.leerClienteDni();
-            Vehiculo vehiculo = Consola.leerVehiculoMatricula();
-            gestorEventos.anadirHoras(new Revision(cliente, vehiculo, Consola.leerFecha("Introduce la fecha de inicio:")), Consola.leerHoras());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void anadirPrecioMaterial() {
-        Consola.mostrarCabecera("AÑADIR PRECIO MATERIAL");
-        try {
-            gestorEventos.anadirPrecioMaterial(Consola.leerRevision(), Consola.leerPrecioMaterial());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void cerrar() {
-        Consola.mostrarCabecera("CERRAR REVISIÓN");
-        try {
-            gestorEventos.cerrar(new Revision(Consola.leerRevision()), Consola.leerFechaCierre());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void borrarCliente() {
-        Consola.mostrarCabecera("BORRAR CLIENTE");
-        try {
-            gestorEventos.borrar(Consola.leerClienteDni());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void borrarVehiculo() {
-        Consola.mostrarCabecera("BORRAR VEHÍCULO");
-        try {
-            gestorEventos.borrar(Consola.leerVehiculo());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void borrarRevision() {
-        Consola.mostrarCabecera("BORRAR REVISIÓN");
-        try {
-            gestorEventos.borrar(Consola.leerRevision());
-        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-
-
-    private void listarVehiculos() {
-        Consola.mostrarCabecera("LISTAR VEHÍCULOS");
-        List<Vehiculo> vehiculoList = gestorEventos.getVehiculos();
-        if (vehiculoList.isEmpty()) {
-            System.out.println("No se ha encontrado ningún vehículo.");
-        } else {
-            System.out.println(vehiculoList);
-        }
-    }
-
-    private void listarRevisiones() {
-        Consola.mostrarCabecera("LISTAR REVISIONES");
-        List<Revision> revisionList = gestorEventos.getRevision();
-        if (revisionList.isEmpty()) {
-            System.out.println("No se ha encontrado ninguna revisión.");
-        } else {
-            System.out.println(revisionList);
-        }
-    }
-
-    private void listarRevisionesCliente() {
-        Consola.mostrarCabecera("LISTAR REVISIONES DEL CLIENTE");
-        List<Revision> clienteList = gestorEventos.getRevisiones(Consola.leerClienteDni());
-        if (clienteList.isEmpty()) {
-            System.out.println("No se ha encontrado ninguna revisión para ese cliente.");
-        } else {
-            System.out.println(clienteList);
-        }
-    }
-
-    private void listarRevisionesVehiculo() {
-        List<Revision> vehiculoList = gestorEventos.getRevisiones(Consola.leerVehiculoMatricula());
-        if (vehiculoList.isEmpty()) {
-            System.out.println("No se ha encontrado ninguna revisión para ese vehículo.");
-        } else {
-            System.out.println(vehiculoList);
-        }
-    }
-
-    private void salir() {
-        Consola.mostrarCabecera("SALIR");
-        gestorEventos.terminar();
-    }
-} */

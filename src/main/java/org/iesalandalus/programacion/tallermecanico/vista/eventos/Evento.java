@@ -1,9 +1,9 @@
- package org.iesalandalus.programacion.tallermecanico.vista.eventos;
+package org.iesalandalus.programacion.tallermecanico.vista.eventos;
 
 import java.util.HashMap;
 import java.util.Map;
 
- public enum Evento {
+public enum Evento {
     INSERTAR_CLIENTE(0, "Insertar cliente"),
     BUSCAR_CLIENTE(1, "Buscar cliente"),
     BORRAR_CLIENTE(2, "Borrar cliente"),
@@ -23,7 +23,8 @@ import java.util.Map;
     ANADIR_HORAS_TRABAJO(16, "Añadir horas a un trabajo"),
     ANADIR_PRECIO_MATERIAL_TRABAJO(17, "Añadir precio material a un trabajo"),
     CERRAR_TRABAJO(18, "Cerrar trabajo"),
-    SALIR(19, "Salir");
+    MOSTRAR_ESTADISTICAS_MENSUALES (19,"Mostrar estadisticas mensauales"),
+    SALIR(20, "Salir");
 
     private final int codigo;
     private final String texto;

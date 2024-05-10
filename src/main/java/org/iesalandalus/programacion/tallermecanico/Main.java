@@ -11,8 +11,7 @@ import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 
 public class Main {
     public static void main(String[] args) {
-        // Crea una nueva fuente de datos con la memoria
-        IControlador controlador = new Controlador(FabricaModelo.CASCADA.crear(FabricaFuenteDatos.MEMORIA),FabricaVista.TEXTO.crear());
+        IControlador controlador = new Controlador(FabricaModelo.CASCADA, FabricaFuenteDatos.FICHEROS, FabricaVista.TEXTO);
         controlador.comenzar();
     }
 }

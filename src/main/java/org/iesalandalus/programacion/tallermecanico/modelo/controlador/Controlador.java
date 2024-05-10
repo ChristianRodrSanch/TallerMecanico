@@ -1,7 +1,10 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.controlador;
 
+import org.iesalandalus.programacion.tallermecanico.modelo.FabricaModelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
+import org.iesalandalus.programacion.tallermecanico.vista.FabricaVista;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.ReceptorEventos;
@@ -10,6 +13,7 @@ import org.iesalandalus.programacion.tallermecanico.vista.texto.Consola;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Controlador implements IControlador {
@@ -17,12 +21,13 @@ public class Controlador implements IControlador {
     private final Vista vista;
     private final Modelo modelo;
 
-    public Controlador(Modelo modelo, Vista vista) {
-        Objects.requireNonNull(modelo, "El modelo no puede ser nulo.");
-        Objects.requireNonNull(vista, "La vista no puede ser nula.");
-        this.modelo = modelo;
-        this.vista = vista;
-        this.vista.getGestorEventos().suscribir(this,Evento.values());
+    public Controlador(FabricaModelo fabricaModelo, FabricaFuenteDatos fabricaFuenteDatos, FabricaVista fabricaVista) {
+        Objects.requireNonNull(fabricaModelo, "ERROR: La fábrica del modelo no puede ser nula.");
+        Objects.requireNonNull(fabricaFuenteDatos, "ERROR: La fábrica de la fuente de datos no puede ser nula.");
+        Objects.requireNonNull(fabricaVista, "ERROR: La fábrica de la vista no puede ser nula.");
+        this.modelo = fabricaModelo.crear(fabricaFuenteDatos);
+        this.vista = fabricaVista.crear();
+        this.vista.getGestorEventos().suscribir(this, Evento.values());
 
     }
 
@@ -64,6 +69,7 @@ public class Controlador implements IControlador {
                 case LISTAR_TRABAJOS -> vista.mostrarTrabajos(modelo.getTrabajos());
                 case LISTAR_TRABAJOS_CLIENTE -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerClienteDni()));
                 case LISTAR_TRABAJOS_VEHICULO -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerVehiculoMatricula()));
+                case MOSTRAR_ESTADISTICAS_MENSUALES -> vista.mostrarEstadisticasMensuales(modelo.getEstadisticasMensuales(vista.leerMes()));
                 case SALIR -> terminar();
                 }
                 if (!resultado.isBlank()) {
