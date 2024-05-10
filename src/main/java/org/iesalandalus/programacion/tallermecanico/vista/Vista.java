@@ -63,4 +63,9 @@ public interface Vista {
     LocalDate leerMes();
 
     void mostrarEstadisticasMensuales(Map<TipoTrabajo,Integer> estadisticas);
+
+    default void mostrarTrabajoCliente(List<Trabajo> trabajos) {mostrarTrabajos(trabajos);}
+
+    default void mostrarTrabajoVehiculo(List<Trabajo> trabajos) {mostrarTrabajos(trabajos);}
+
 }

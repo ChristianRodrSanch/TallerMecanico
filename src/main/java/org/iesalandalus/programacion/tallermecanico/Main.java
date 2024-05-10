@@ -11,7 +11,7 @@ import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 
 public class Main {
     public static void main(String[] args) {
-        IControlador controlador = new Controlador(FabricaModelo.CASCADA, FabricaFuenteDatos.FICHEROS, FabricaVista.TEXTO);
+        IControlador controlador = new Controlador(FabricaModelo.CASCADA, FabricaFuenteDatos.FICHEROS, FabricaVista.GRAFICA);
         controlador.comenzar();
     }
 }
