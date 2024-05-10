@@ -22,9 +22,12 @@ public class Controlador implements IControlador {
     private final Modelo modelo;
 
     public Controlador(FabricaModelo fabricaModelo, FabricaFuenteDatos fabricaFuenteDatos, FabricaVista fabricaVista) {
+        Objects.requireNonNull(fabricaModelo, "ERROR: La fábrica del modelo no puede ser nula.");
+        Objects.requireNonNull(fabricaFuenteDatos, "ERROR: La fábrica de la fuente de datos no puede ser nula.");
+        Objects.requireNonNull(fabricaVista, "ERROR: La fábrica de la vista no puede ser nula.");
         this.modelo = fabricaModelo.crear(fabricaFuenteDatos);
         this.vista = fabricaVista.crear();
-        this.vista.getGestorEventos().suscribir(this,Evento.values());
+        this.vista.getGestorEventos().suscribir(this, Evento.values());
 
     }
 

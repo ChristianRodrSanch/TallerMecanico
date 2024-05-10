@@ -6,12 +6,15 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.*;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
-    private ITrabajos trabajos;
-    private IVehiculos vehiculos;
-    private IClientes clientes;
+    private final IClientes clientes;
+    private final IVehiculos vehiculos;
+    private final ITrabajos trabajos;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
         Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente de datos no puede ser nula.");
@@ -23,11 +26,17 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public void comenzar() {
+        clientes.comenzar();
+        vehiculos.comenzar();
+        trabajos.comenzar();
         System.out.println("Modelo comenzado.");
     }
 
     @Override
     public void terminar() {
+        trabajos.terminar();
+        vehiculos.terminar();
+        clientes.terminar();
         System.out.println("Modelo terminado.");
     }
 
@@ -55,13 +64,13 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public Cliente buscar(Cliente cliente) {
-        Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
+        cliente = Objects.requireNonNull(clientes.buscar(cliente), "No existe un cliente igual.");
         return new Cliente(cliente);
     }
 
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
-        Objects.requireNonNull(vehiculos.buscar(vehiculo), "El vehículo no puede ser nulo buscar.");
+        vehiculo = Objects.requireNonNull(vehiculos.buscar(vehiculo), "No existe un vehículo igual.");
         return vehiculo;
     }
 
@@ -159,6 +168,5 @@ public class ModeloCascada implements Modelo {
     public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
         return trabajos.getEstadisticasMensuales(mes);
     }
-
 
 }
