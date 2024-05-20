@@ -5,9 +5,11 @@ import org.iesalandalus.programacion.tallermecanico.modelo.dominio.TipoTrabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
+import org.iesalandalus.programacion.tallermecanico.vista.controladores.LeerCliente;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
 import org.iesalandalus.programacion.tallermecanico.vista.grafica.utilidades.Controlador;
+import org.iesalandalus.programacion.tallermecanico.vista.grafica.utilidades.Controladores;
 import org.iesalandalus.programacion.tallermecanico.vista.grafica.utilidades.Dialogos;
 
 import java.time.LocalDate;
@@ -48,27 +50,32 @@ public class VistaGrafica implements Vista {
 
     @Override
     public void terminar() {
+        System.out.println("Hasta luego");
 
     }
 
     @Override
     public Cliente leerCliente() {
-        return null;
+        LeerCliente leerCliente = (LeerCliente) (Controladores.get("/vistas/LeerCliente.fxml", "Clientes", ventanaPrincipal.getEscenario()));
+        return leerCliente.getCliente();
     }
 
     @Override
     public Cliente leerClienteDni() {
-        return null;
+        LeerCliente leerCliente= (LeerCliente) (Controladores.get("/vistas/LeerCliente.fxml", "Clientes", ventanaPrincipal.getEscenario()));
+        return Cliente.get(leerClienteDni().getDni());
     }
 
     @Override
     public String leerNuevoNombre() {
-        return "";
+        LeerCliente leerCliente = (LeerCliente) (Controladores.get("/vistas/LeerCliente.fxml", "Clientes", ventanaPrincipal.getEscenario()));
+        return leerCliente.getCliente().getNombre();
     }
 
     @Override
     public String leerNuevoTelefono() {
-        return "";
+        LeerCliente leerCliente = (LeerCliente) (Controladores.get("/vistas/LeerCliente.fxml", "Clientes", ventanaPrincipal.getEscenario()));
+        return leerCliente.getCliente().getTelefono();
     }
 
     @Override

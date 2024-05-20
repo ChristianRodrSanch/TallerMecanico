@@ -1,8 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.tallermecanico.vista.controladores.VentanaPrincipal">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.tallermecanico.vista.controladores.VentanaPrincipal">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="miSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="374.0" prefWidth="222.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes" wrappingWidth="93.33672332763672">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+            </Text>
+            <Button fx:id="btInsertarCliente" mnemonicParsing="false" onAction="#insertarCliente" prefHeight="26.0" prefWidth="118.0" text="Insertar Cliente" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btBuscarCliente" mnemonicParsing="false" onAction="#buscarCliente" prefHeight="26.0" prefWidth="118.0" text="Buscar Cliente" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btlistarCliente" mnemonicParsing="false" onAction="#listarCliente" prefHeight="26.0" prefWidth="118.0" text="Listar Cliente" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox alignment="CENTER" prefHeight="374.0" prefWidth="222.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vehiculos" wrappingWidth="104.53675079345703">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+            </Text>
+            <Button fx:id="btInsertarVehiculos" mnemonicParsing="false" onAction="#insertarVehiculo" prefHeight="26.0" prefWidth="118.0" text="Insertar Vehiculo" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btBuscarCliente" mnemonicParsing="false" onAction="#buscarVehiculo" prefHeight="26.0" prefWidth="118.0" text="Buscar Vehiculo" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btListarVehiculo" mnemonicParsing="false" onAction="#ListarVehiculo" prefHeight="26.0" prefWidth="118.0" text="Listar Vehiculo" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </center>
+   <right>
+      <VBox alignment="CENTER" prefHeight="374.0" prefWidth="222.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trabajos" wrappingWidth="104.53675079345703">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+            </Text>
+            <Button fx:id="btInsertarTrabajos" mnemonicParsing="false" onAction="#insertarTrabajo" prefHeight="26.0" prefWidth="118.0" text="Insertar Trabajo" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btBuscarVehiculo" layoutX="62.0" layoutY="179.0" mnemonicParsing="false" onAction="#buscarVehiculo" prefHeight="26.0" prefWidth="118.0" text="Buscar Trabajo" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="btListarTrabajos" mnemonicParsing="false" onAction="#listarTrabajo" prefHeight="26.0" prefWidth="118.0" text="Listar Trabajo" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>
