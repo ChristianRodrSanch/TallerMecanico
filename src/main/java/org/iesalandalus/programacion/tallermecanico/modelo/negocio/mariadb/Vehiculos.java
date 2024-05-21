@@ -54,7 +54,7 @@ public class Vehiculos implements IVehiculos {
     public List<Vehiculo> get() {
         List<Vehiculo> vehiculos = new ArrayList<>();
         try (Statement sentencia = conexion.createStatement()) {
-            ResultSet filas = sentencia.executeQuery("select * from clientes");
+            ResultSet filas = sentencia.executeQuery("select * from vehiculos");
             while (filas.next()) {
                 vehiculos.add(getVehiculo(filas));
             }

@@ -30,9 +30,9 @@ public class Revision extends Trabajo {
     public String toString() {
         String mensaje;
         if (estaCerrado()) {
-            mensaje = String.format("RevisiÃ³n -> %s - %s (%s - %s): %s horas, %.2f â‚¬ total", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), FORMATO_FECHA.format(this.fechaFin), this.horas,getPrecio());
+            mensaje = String.format("Revisión -> %s - %s (%s - %s): %s horas, %.2f € total", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), FORMATO_FECHA.format(this.fechaFin), this.horas,getPrecio());
         } else {
-            mensaje = String.format("RevisiÃ³n -> %s - %s (%s - ): %s horas", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), this.horas);
+            mensaje = String.format("Revisión -> %s - %s (%s - ): %s horas", this.cliente, this.vehiculo, FORMATO_FECHA.format(this.fechaInicio), this.horas);
         }
         return mensaje;
 
