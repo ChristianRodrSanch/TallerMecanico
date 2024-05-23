@@ -9,19 +9,19 @@ public enum Evento {
     BORRAR_CLIENTE(2, "Borrar cliente"),
     LISTAR_CLIENTES(3, "Listar clientes"),
     MODIFICAR_CLIENTE(4, "Modificar cliente"),
-    INSERTAR_VEHICULO(5, "Insertar vehÃ­culo"),
-    BUSCAR_VEHICULO(6, "Buscar vehÃ­culo"),
-    BORRAR_VEHICULO(7, "Borrar vehÃ­culo"),
-    LISTAR_VEHICULOS(8, "Listar vehÃ­culos"),
-    INSERTAR_REVISION(9, "Insertar revisiÃ³n"),
+    INSERTAR_VEHICULO(5, "Insertar vehículo"),
+    BUSCAR_VEHICULO(6, "Buscar vehículo"),
+    BORRAR_VEHICULO(7, "Borrar vehículo"),
+    LISTAR_VEHICULOS(8, "Listar vehículos"),
+    INSERTAR_REVISION(9, "Insertar revisión"),
     INSERTAR_MECANICO(10,"Insertar mecanico"),
     BUSCAR_TRABAJO(11, "Buscar trabajo"),
     BORRAR_TRABAJO(12, "Borrar trabajo"),
     LISTAR_TRABAJOS(13, "Listar trabajos"),
     LISTAR_TRABAJOS_CLIENTE(14, "Listar trabajos de un cliente"),
-    LISTAR_TRABAJOS_VEHICULO(15, "Listar trabajos de un vehÃ­culo"),
-    ANADIR_HORAS_TRABAJO(16, "AÃ±adir horas a un trabajo"),
-    ANADIR_PRECIO_MATERIAL_TRABAJO(17, "AÃ±adir precio material a un trabajo"),
+    LISTAR_TRABAJOS_VEHICULO(15, "Listar trabajos de un vehículo"),
+    ANADIR_HORAS_TRABAJO(16, "Añadir horas a un trabajo"),
+    ANADIR_PRECIO_MATERIAL_TRABAJO(17, "Añadir precio material a un trabajo"),
     CERRAR_TRABAJO(18, "Cerrar trabajo"),
     MOSTRAR_ESTADISTICAS_MENSUALES (19,"Mostrar estadisticas mensauales"),
     SALIR(20, "Salir");
@@ -51,7 +51,7 @@ public enum Evento {
 
     public static Evento get(int codigo) {
         if (!esValido(codigo)) {
-            throw new IllegalArgumentException("El cÃ³digo no es correcto.");
+            throw new IllegalArgumentException("El código no es correcto.");
         }
         return eventos.get(codigo);
     }

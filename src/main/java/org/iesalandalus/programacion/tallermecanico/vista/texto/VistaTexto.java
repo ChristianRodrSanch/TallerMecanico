@@ -51,15 +51,15 @@ public class VistaTexto implements Vista {
 
     @Override
     public  Cliente leerCliente() {
-        String nombre = Consola.leerCadena("Introduce un nombre v√°lido: ");
-        String dni = Consola.leerCadena("Introduce un dni v√°lido: ");
-        String telefono = Consola.leerCadena("Introduce un tel√©fono v√°lido: ");
+        String nombre = Consola.leerCadena("Introduce un nombre v·lido: ");
+        String dni = Consola.leerCadena("Introduce un dni v·lido: ");
+        String telefono = Consola.leerCadena("Introduce un telÈfono v·lido: ");
         return new Cliente(nombre, dni, telefono);
     }
 
     @Override
     public  Cliente leerClienteDni() {
-        String dni = Consola.leerCadena("Introduce un dni v√°lido para hacer operaciones: ");
+        String dni = Consola.leerCadena("Introduce un dni v·lido para hacer operaciones: ");
         return Cliente.get(dni);
     }
 
@@ -70,20 +70,20 @@ public class VistaTexto implements Vista {
 
     @Override
     public  String leerNuevoTelefono() {
-        return Consola.leerCadena("Introduce el nuevo tel√©fono del cliente: ");
+        return Consola.leerCadena("Introduce el nuevo telÈfono del cliente: ");
     }
 
     @Override
     public  Vehiculo leerVehiculo() {
-        String marca = leerCadena("Introduce una marca v√°lida: ");
-        String modelo = leerCadena("Introduce un modelo v√°lido: ");
-        String matricula = leerCadena("Introduce una matr√≠cula v√°lida: ");
+        String marca = leerCadena("Introduce una marca v·lida: ");
+        String modelo = leerCadena("Introduce un modelo v·lido: ");
+        String matricula = leerCadena("Introduce una matrÌcula v·lida: ");
         return new Vehiculo(marca, modelo, matricula);
     }
 
     @Override
     public  Vehiculo leerVehiculoMatricula() {
-        String matricula = Consola.leerCadena("Introduce una matr√≠cula v√°lida para hacer operaciones: ");
+        String matricula = Consola.leerCadena("Introduce una matrÌcula v·lida para hacer operaciones: ");
         return Vehiculo.get(matricula);
     }
 
@@ -116,12 +116,12 @@ public class VistaTexto implements Vista {
 
     @Override
     public  int leerHoras() {
-        return Consola.leerEntero("Introduce su correspondiente n√∫mero de horas: ");
+        return Consola.leerEntero("Introduce su correspondiente n˙mero de horas: ");
     }
 
     @Override
     public  float leerPrecioMaterial() {
-        return Consola.leerReal("Introduce el precio del material a a√±adir: ");
+        return Consola.leerReal("Introduce el precio del material a aÒadir: ");
     }
 
 
@@ -149,19 +149,19 @@ public class VistaTexto implements Vista {
     @Override
     public void mostrarCliente(Cliente cliente) {
 
-        System.out.println((cliente != null) ? cliente : "No existe ning√∫n cliente con dicho DNI.");
+        System.out.println((cliente != null) ? cliente : "No existe ning˙n cliente con dicho DNI.");
 
     }
 
     @Override
     public void mostrarVehiculo(Vehiculo vehiculo) {
-        System.out.println((vehiculo != null) ? vehiculo : "No existe ning√∫n veh√≠culo con dicha matr√≠cula.");
+        System.out.println((vehiculo != null) ? vehiculo : "No existe ning˙n vehÌculo con dicha matrÌcula.");
     }
 
     @Override
     public void mostrarTrabajo(Trabajo trabajo) {
 
-        System.out.println((trabajo != null) ? trabajo : "No existe ning√∫n trabajo para ese cliente, veh√≠culo y fecha.");
+        System.out.println((trabajo != null) ? trabajo : "No existe ning˙n trabajo para ese cliente, vehÌculo y fecha.");
 
     }
 
@@ -213,7 +213,7 @@ public class VistaTexto implements Vista {
     @Override
     public void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas) {
         for (Map.Entry<TipoTrabajo,Integer> estadistica : estadisticas.entrySet()) { // Coge las entradas del mapa
-            System.out.println("Tipo trabajo" + estadistica.getKey()); // Aqu√≠ asigna su clave en este caso que trabajo ser√≠a
+            System.out.println("Tipo trabajo" + estadistica.getKey()); // AquÌ asigna su clave en este caso que trabajo serÌa
             System.out.println("Valores de las Estadisticas" + estadistica.getValue()); // Y aqui le asigna su valor
 
         }
